@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using CourseScheduler.Databases;
 
 namespace CourseScheduler.Controllers
 {
@@ -13,18 +14,20 @@ namespace CourseScheduler.Controllers
             return View();
         }
 
-        public ActionResult About()
+
+        [HttpPost]
+        public ActionResult Login()
         {
-            ViewBag.Message = "Your application description page.";
+            UserDatabase userDatabase = new UserDatabase();
+            string username = Request.Form["username"];
+            Console.Write(username);
+            string password = Request.Form["password"];
 
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+            if (userDatabase.AthenicateUser(username, password) != null)
+            {
+                return View("SuperAdminDashboard");
+            }
+            return View("Index");
         }
     }
 }
